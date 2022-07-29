@@ -39,7 +39,7 @@ end
 end
 
 @testset "Центр \"масс\" (center)" begin
-    @testset "Центр точек без области" begin center(i * Point(1, 1) for i in 1:10) == Point(5.5, 5.5) end
+    @testset "Центр точек без области" begin @test center(i * Point(1, 1) for i in 1:10) == Point(5.5, 5.5) end
 
     points = [Point(x, y) for x in -2:2, y in -2:2]
     @testset "Центр точек, лежащих в круге" begin
