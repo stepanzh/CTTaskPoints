@@ -6,7 +6,6 @@ import LinearAlgebra
 
 const AWARD1 = 1
 const AWARD2 = 2
-const AWARD3 = 3
 
 ScoredTests.DefaultScoring.award = AWARD1
 ScoredTests.DefaultScoring.penalty = 0
@@ -20,7 +19,7 @@ maints *= let ts = ScoredTestSet("Конструкторы struct Point")
     ts *= @scoredtest Point(1.0, 2.0) isa Point name="Point(::Float64, ::Float64)"
     ts *= @scoredtest Point(1, 2.5) isa Point name="Point(::Int, ::Float64)"
     ts *= @scoredtest Point(1.0, 2) isa Point name="Point(::Float64, ::Int)"
-    ts *= @scoredtest Point(1//1, 2) isa Point name="Point(::Rational, Int)" award=2
+    ts *= @scoredtest Point(1//1, 2) isa Point name="Point(::Rational, Int)" award=AWARD2
 end
 
 # Линейные операции
@@ -41,7 +40,7 @@ end
 
 maints *= let ts = ScoredTestSet("Конструкторы Circle")
     ts *= @scoredtest Circle(Point(0, 0), 2) isa Circle name="Circle(::Point{Int}, ::Int)"
-    ts *= @scoredtest Circle(Point(0, 0), 2.0) isa Circle name="Circle(::Point{Int}, ::Float64)" award=2
+    ts *= @scoredtest Circle(Point(0, 0), 2.0) isa Circle name="Circle(::Point{Int}, ::Float64)" award=AWARD2
 end
 
 maints *= let ts = ScoredTestSet("Точка в круге (расширение Base)")
@@ -51,7 +50,7 @@ end
 
 maints *= let ts = ScoredTestSet("Конструкторы Square")
     ts *= @scoredtest Square(Point(0, 0), 2) isa Square name="Square(::Point{Int}, ::Int)"
-    ts *= @scoredtest Square(Point(0, 0), 2.0) isa Square name="Square(::Point{Int}, ::Float64)" award=2
+    ts *= @scoredtest Square(Point(0, 0), 2.0) isa Square name="Square(::Point{Int}, ::Float64)" award=AWARD2
 end
 
 maints *= let ts = ScoredTestSet("Точка в квадрате (расширение Base)")
@@ -60,13 +59,13 @@ maints *= let ts = ScoredTestSet("Точка в квадрате (расшире
 end
 
 maints *= let ts = ScoredTestSet("Центр масс")
-    ts *= @scoredtest center(i * Point(1, 1) for i in 1:10) == Point(5.5, 5.5) name="Без указания области" award=2
+    ts *= @scoredtest center(i * Point(1, 1) for i in 1:10) == Point(5.5, 5.5) name="Без указания области" award=AWARD2
 
     try
         points = [Point(x, y) for x in -2:2, y in -2:2]
         s = Square(Point(0, 0) + Point(0.5, 0.5), 2.0)
-        ts *= @scoredtest center(points, Circle(Point(1, 2), 1)) == Point(1.0, 1.75) name="Лежащие в круге" award=2
-        ts *= @scoredtest center(points, s) == Point(0.5, 0.5) name="Лежащие в квадрате" award=2
+        ts *= @scoredtest center(points, Circle(Point(1, 2), 1)) == Point(1.0, 1.75) name="Лежащие в круге" award=AWARD2
+        ts *= @scoredtest center(points, s) == Point(0.5, 0.5) name="Лежащие в квадрате" award=AWARD2
     catch
         ts *= @scoredtest error("Не реализованы операции") name="Лежащие в круге"
         ts *= @scoredtest error("Не реализованы операции") name="Лежащие в квадрате"
@@ -78,18 +77,18 @@ maints *= let ts = ScoredTestSet("k-Ближайших соседей")
     try
         points = [Point(x, y) for x in -2:2, y in -2:2]
         origin = Point(0, 0)
-        ts *= @scoredtest isempty(neighbors(points, origin, 0)) award=2
-        ts *= @scoredtest isempty(neighbors(points, origin, -1)) award=2
+        ts *= @scoredtest isempty(neighbors(points, origin, 0)) award=AWARD2
+        ts *= @scoredtest isempty(neighbors(points, origin, -1)) award=AWARD2
 
         n4 = Set(Point(x, y) for x in -1:1, y in -1:1 if  abs(x + y) == 1)
-        ts *= @scoredtest first(neighbors(points, origin, 1)) in n4 award=2
-        ts *= @scoredtest all(x -> x in n4, neighbors(points, origin, 4)) award=2
+        ts *= @scoredtest first(neighbors(points, origin, 1)) in n4 award=AWARD2
+        ts *= @scoredtest all(x -> x in n4, neighbors(points, origin, 4)) award=AWARD2
 
-        ts *= @scoredtest all(x -> x in setdiff(Set(points[2:4, 2:4]), [origin]), neighbors(points, origin, 8)) award=2
-        ts *= @scoredtest Set(neighbors(points, origin, 2 * length(points))) == setdiff(Set(points), [origin]) award=2
+        ts *= @scoredtest all(x -> x in setdiff(Set(points[2:4, 2:4]), [origin]), neighbors(points, origin, 8)) award=AWARD2
+        ts *= @scoredtest Set(neighbors(points, origin, 2 * length(points))) == setdiff(Set(points), [origin]) award=AWARD2
     catch
         for _ in 1:6
-            ts *= @scoredtest error("Не реализованы операции") award=2
+            ts *= @scoredtest error("Не реализованы операции") award=AWARD2
         end
     end
     ts
@@ -110,21 +109,21 @@ maints *= let ts = ScoredTestSet("Дополнительно")
 
         try
             @inferred center(points, Circle(Point(1, 2), 1))
-            ts *= @scoredtest true award=2 name="Стабильность функции center для круга"
+            ts *= @scoredtest true award=AWARD2 name="Стабильность функции center для круга"
         catch
             ts *= @scoredtest false name="Стабильность функции center для круга"
         end
 
         try
             @inferred center(points, Square(Point(0, 0) + Point(0.5, 0.5), 2.0))
-            ts *= @scoredtest true award=2 name="Стабильность функции center для квадрата"
+            ts *= @scoredtest true award=AWARD2 name="Стабильность функции center для квадрата"
         catch
             ts *= @scoredtest false name="Стабильность функции center для квадрата"
         end
     catch
         ts *= @scoredtest error("Не реализованы операции") award=4
-        ts *= @scoredtest error("Не реализованы операции") award=2
-        ts *= @scoredtest error("Не реализованы операции") award=2
+        ts *= @scoredtest error("Не реализованы операции") award=AWARD2
+        ts *= @scoredtest error("Не реализованы операции") award=AWARD2
     end
     ts
 end
