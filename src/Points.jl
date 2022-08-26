@@ -1,9 +1,13 @@
 module Points
 
 # Следющие имена должны быть публичными:
-# Point, center, neighbors, Circle, Square
+# Point, neighbors, Circle, Square, center
 
-"Точка на декартовой плоскости."
+"""
+    Point(x, y)
+
+Точка на декартовой плоскости.
+"""
 Point
 
 """
@@ -20,16 +24,24 @@ center(points)
 """
 neighbors(points, origin, k)
 
-"Круговая область."
+"""
+    Circle(o::Point, radius)
+
+Круг с центром `o` и радиусом `radius`.
+"""
 Circle
 
-"Квадратная область."
+"""
+    Square(o::Point, side)
+
+Квадрат с центром в `o` и стороной `side`.
+"""
 Square
 
 """
     center(points, area) -> Point
 
-Центр масс точек `points`, принадлежащих области `area`.
+Центр масс точек `points`, принадлежащих области `area` (`Circle` или `Square`).
 """
 center(points, area)
 
