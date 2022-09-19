@@ -67,9 +67,15 @@ function neighbors(points, origin, k::Int)
 	for i in 1:length(points)
     	D[points[i]] = rho[i]
     end
-	sort(collect(D), by=x->x[2])
 	
-	return isapprox(sort(collect(D), by=x->x[2])[1][2] == 0.0) ? sort(collect(D), by=x->x[2])[2][1] : sort(collect(D), by=x->x[2])[1][1] == 0.0
+	ord = sort(collect(D), by=x->x[2])
+	
+	for i in length(ord)
+		if isapprox(ord[i][2], 0.0)
+			continue
+		end
+		return ord[i][1]
+	end
 end
 
 """
