@@ -57,14 +57,19 @@ end
 
 Поиск ближайших `k` соседей точки `origin` среди точек `points`.
 """
-function neighbors(points::Vector{<:Point}, origin::Point, k::Int) <:Vector{Point}
+function neighbors(points, origin, k::Int)
 	if k<=0
 		return []
 	end
-	for p in points
-				
-	end
-	return
+	rho = [dist(p-origin) for p in points]
+	
+	D = Dict{Point, Real}
+	for i in 1:length(points)
+    	D[points[i]] = rho[i]
+    end
+	sort(collect(D), by=x->x[2])
+	
+	return isapprox(sort(collect(D), by=x->x[2])[1][2] == 0.0) ? sort(collect(D), by=x->x[2])[2][1] : sort(collect(D), by=x->x[2])[1][1] == 0.0
 end
 
 """
