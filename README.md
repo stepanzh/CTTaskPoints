@@ -48,6 +48,20 @@ Precompiling project...
 
 ### Самопроверка
 
+#### Самопроверка вручную
+
+В корне пакета есть пример файла для экспериментов `draft.jl` с использованием модуля `Points`.
+Чтобы его запустить, необходимо при запуске julia указать окружение `Project.toml`
+
+```console
+$ cd /path/to/CTTaskPoints.jl
+$ julia --project=Project.toml draft.jl
+```
+
+Можете изменять файл `draft.jl` (и создавать новые) по своему усмотрению.
+
+#### Система тестов
+
 В задании есть система тестов для самопроверки.
 
 Её можно запустить из терминала или REPL.
@@ -55,8 +69,7 @@ Precompiling project...
 **Запуск из терминала**
 
 ```console
-$ pwd
-/bla/bla/bla/CTTaskPoints
+$ cd /path/to/CTTaskPoints.jl
 $ julia --project=Project.toml test/runtests.jl 
 Results
 Реализация модуля Points
@@ -72,8 +85,7 @@ No.   Result  Score  [Name]  [Error]
 **Запуск из REPL**
 
 ```console
-$ pwd
-/bla/bla/bla/CTTaskPoints
+$ cd /path/to/CTTaskPoints.jl
 $ julia
                _
    _       _ _(_)_     |  Documentation: https://docs.julialang.org
@@ -100,3 +112,5 @@ No.   Result  Score  [Name]  [Error]
    2       E      0  Point(::Float64, ::Float64)  Error occured: UndefVarError(:Point)
 ...
 ```
+
+При тестировании из REPL можно вносить изменения в коде `src/` и вызывать тестирование *без перезапуска* REPL.
